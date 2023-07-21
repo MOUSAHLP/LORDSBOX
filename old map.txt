@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lordsbox/controller/map_page_controller.dart';
+
+class MyMap extends StatelessWidget {
+  const MyMap({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<MapPageController>();
+    return Obx(() {
+      return GoogleMap(
+        zoomGesturesEnabled: true,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(controller.posStream.value["latitude"],
+              controller.posStream.value["longitude"]),
+          zoom: 18,
+        ),
+        markers: (controller.markers),
+        mapType: MapType.normal,
+        onMapCreated: (con) {
+          controller.mapController = con;
+        },
+      );
+    });
+  }
+}
